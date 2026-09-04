@@ -1,0 +1,305 @@
+% Solutions to Assignment 1 -- Foundations of Responsible AI (18-813 / 19-746)
+% Built on the UPenn CIS HW base template (cisXXX.cls).
+
+\documentclass{cisXXX} % Requires cisXXX.cls in the same directory
+
+\HWauthor{Sri Datta Bandreddi}{sbandred@andrew.cmu.edu}
+\HWandrewId{sbandred} % shown in the per-page running header
+\HWno{1}
+\HWcourse{18-813/19-746}
+% \HWpartner{Partner Name} % Uncomment if you collaborated with a partner
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+
+\date{Fall 2026}
+
+\begin{document}
+\maketitle
+
+% =====================================================================
+% Question 1: Course logistics (verified against the Syllabus)
+% =====================================================================
+\HWproblem
+\HWsubproblem
+Piazza.
+
+\HWsubproblem
+Canvas.
+
+\HWsubproblem
+0 for the corresponding questions.
+
+\HWsubproblem
+The default grade is 0 if the submission is not readable.
+
+% =====================================================================
+% Question 2: Grading, late days, and make-ups (verified against the Syllabus)
+% =====================================================================
+\HWproblem
+\HWsubproblem
+12 PM (noon).
+
+\HWsubproblem
+The teaching staff may deny future re-grade requests after two unsuccessful requests.
+
+\HWsubproblem
+3 late days for the semester.
+
+\HWsubproblem
+10\% (out of the total 100\%) is subtracted per day.
+
+\HWsubproblem
+At least 3 weeks in advance.
+
+% =====================================================================
+% Question 3: Collaboration, AI, and other policies (verified against the Syllabus)
+% =====================================================================
+\HWproblem
+\HWsubproblem
+Receive a grade of 0 on the corresponding assignment, quiz, or project, with no exceptions, and further disciplinary action may be taken.
+
+\HWsubproblem
+Yes. AI may be used to help understand course material, brainstorm, format, or proofread. AI can be used for help, but the ownership and responsibility of the work remain with the student.
+
+\HWsubproblem
+No. AI may not be used to generate substantive contributions or as a substitute for learning the material.
+
+\HWsubproblem
+True. The teaching staff may ask the student to explain how they solved a problem or reached a conclusion and may use their response for grading.
+
+\HWsubproblem
+No, unless the student has special permission from the staff.
+
+% =====================================================================
+% Question 4: Probability and statistics
+% =====================================================================
+\HWproblem
+\HWsubproblem
+For independent $A$ and $B$:
+\begin{align*}
+P(A \cap B) &= P(A)\,P(B), \\
+P(A, B) &= P(A)\,P(B), \\
+P(A \mid B) &= P(A), \\
+P(B \mid A) &= P(B).
+\end{align*}
+
+\HWsubproblem
+By Bayes' rule,
+$$P(B \mid A) = \frac{P(A \mid B)\,P(B)}{P(A)}.$$
+
+\HWsubproblem
+If $Y$ is discrete,
+$$p(x) = \sum_{y} p(x, y).$$
+
+\HWsubproblem
+If $Y$ is continuous,
+$$p(x) = \int_Y p(x, y)\, dy.$$
+
+\HWsubproblem
+$$\mathbb{E}[Z] = \sum_{i=1}^{k} z_i\, P(Z = z_i).$$
+
+\HWsubproblem
+Recovery rates (recovered / total):
+\begin{align*}
+\text{(i) Group 0:} \quad & \text{treatment } \tfrac{8}{10} = 80\%, \qquad \text{no treatment } \tfrac{70}{90} \approx 77.8\%. \\
+\text{(ii) Group 1:} \quad & \text{treatment } \tfrac{15}{90} \approx 16.7\%, \qquad \text{no treatment } \tfrac{3}{20} = 15\%. \\
+\text{(iii) Overall:} \quad & \text{treatment } \tfrac{8+15}{10+90} = \tfrac{23}{100} = 23\%, \quad \text{no treatment } \tfrac{70+3}{90+20} = \tfrac{73}{110} \approx 66.4\%.
+\end{align*}
+\textbf{Observation:} Both groups have a higher recovery rate for treatment ($80\% > 77.8\%$ and $16.7\% > 15\%$), yet in aggregate, treatment looks far worse ($23\% < 66.4\%$). The direction of the statistic is reversed when the groups are combined.
+
+\noindent\textbf{Underlying phenomenon:} This is Simpson's paradox. Group membership is the confounding variable. There is a skew in how Group 0 and Group 1 are distributed between the treatment and no treatment populations. Since the groups have very different recovery rates, this skew can make the aggregate statistic misleading and even reverse the trend seen within each group.
+
+% =====================================================================
+% Question 5: Optimization
+% =====================================================================
+\HWproblem
+\HWsubproblem
+Minimize the expected loss of $f_\theta$ over the data distribution $D$:
+$$\min_{\theta} \; \mathbb{E}_{(x,y) \sim D}\big[\,\mathrm{Loss}(f_\theta(x),\, y)\,\big].$$
+
+\HWsubproblem
+Maximize the worst-case (minimum) outcome over the inputs $x_1, \dots, x_k$:
+$$\max_{\theta} \; \min_{i \in \{1,\dots,k\}} \; f_\theta(x_i).$$
+
+\HWsubproblem
+The Lagrangian, with multiplier $\lambda \ge 0$, is
+$$L(\theta, \lambda) = \mathrm{Loss}(f_\theta, D) + \lambda\,\big(g(\theta) - \delta\big).$$
+
+\HWsubproblem
+$\lambda$ controls how much we care about the constraint. If $\lambda$ increases, breaking the constraint becomes more costly, so the model focuses on satisfying $g(\theta) \le \delta$, even if the loss goes up. If $\lambda$ decreases, the constraint matters less, so the model focuses on lowering the loss and may break the constraint.
+
+% =====================================================================
+% Question 6: Machine learning
+% =====================================================================
+\HWproblem
+\HWsubproblem
+The empirical training loss is the average loss over the samples:
+$$\hat{L}(\theta) = \frac{1}{n} \sum_{i=1}^{n} \mathrm{Loss}\big(f_\theta(x_i),\, y_i\big).$$
+
+\HWsubproblem
+Overfitting is when the model fits the training data too closely, capturing noise rather than the underlying signal, so it generalizes poorly to new data. A typical symptom is that the training error keeps decreasing while the validation error stops decreasing or starts to rise.
+
+\HWsubproblem
+\begin{align*}
+\mathrm{TPR} &= P(\hat{Y} = 1 \mid Y = 1), &
+\mathrm{TNR} &= P(\hat{Y} = 0 \mid Y = 0), \\
+\mathrm{FPR} &= P(\hat{Y} = 1 \mid Y = 0), &
+\mathrm{FNR} &= P(\hat{Y} = 0 \mid Y = 1).
+\end{align*}
+
+\HWsubproblem
+$$\mathrm{FNR} = 1 - \mathrm{TPR}, \qquad \mathrm{FPR} = 1 - \mathrm{TNR}.$$
+(Each conditions on the same true label, and the two prediction outcomes are complementary.)
+
+% =====================================================================
+% Question 7: Responsible AI
+% =====================================================================
+\HWproblem
+\HWsubproblem
+The two factors are \textbf{automation} and \textbf{autonomy}.
+\begin{itemize}
+\item \textbf{Automation:} applying the same rules across many decisions at scale.
+\item \textbf{Autonomy:} the AI makes those decisions on its own, with little or no human oversight.
+\end{itemize}
+
+\HWsubproblem
+\textbf{Autonomy in hiring:} The model decides who gets hired on its own, so no human is watching to catch its mistakes. If it is biased, that bias directly decides people's job prospects or career paths with nothing to correct it.
+
+\HWsubproblem
+\textbf{Automation in hiring:} It's the system that executes the decisions made by autonomy at scale (decision models aren't necessarily perfect). It helps scale, but at the same time it is a double-edged sword, as a bias can propagate from one application to millions.
+
+% =====================================================================
+% Question 8: How unfairness arises
+% =====================================================================
+\HWproblem
+\HWsubproblem
+\textbf{Proxy labels:} The label $Y$ may not measure what we actually care about. For example, using whether they were hired as a proxy for job success means the model learns patterns from past hiring decisions, including any existing bias or discrimination. Similarly, salary can reflect unequal opportunities rather than ability. As a result, the model can reproduce historical unfairness while appearing to predict a legitimate outcome.
+
+\HWsubproblem
+\textbf{Missing features:} The features may not carry enough information to tell qualified from unqualified applicants. Here qualification really depends on $X_3$, but the model only sees $X = (X_1, X_2)$, so it has to decide using $X_2$ alone. The difficulty is that $X_2$ points in opposite directions for the two groups. An applicant with $X_1 = 0$ is qualified when $X_3 < X_2$, while an applicant with $X_1 = 1$ is qualified when $X_3 > X_2$. Since $X_3$ is never observed, any rule based on $X_2$ that helps one group must hurt the other. As a result, some unqualified applicants in the favorable group are rated well, while genuinely qualified applicants in the other group are rated poorly, and the errors line up with $X_1$.
+
+\HWsubproblem
+\textbf{Underparameterized model:} A model that isn't expressive enough can only capture the coarsest relationship between $X$ and $Y$, and misses the finer distinctions. Think of fitting a simple curve to a more complex distribution. Only the points that happen to lie along that curve get predicted well, and the rest are left mispredicted. If the two groups sit in different regions of this space, one group lands along the curve while the other does not. As a result, the errors are not shared evenly. They concentrate on the group the simple model cannot fit, and that unintended gap is where the unfairness comes from.
+
+\HWsubproblem
+\textbf{Overfitting:} Overfitting is when the model relies too heavily on patterns in the training data, including spurious correlations that hold in the sample but not in general. When it leans on such a shortcut, it does well on whoever happens to fit it and badly on everyone else. Because these shortcuts often track group membership, the resulting errors end up concentrated on particular groups rather than spread out.
+
+\HWsubproblem
+\textbf{Selective labels:} We only see the label $Y$ for applicants who were actually hired. For the rejected ones, we never learn how they would have done, so we are missing labels for a whole part of the population. Since past hiring was itself biased, the labels we do have come from a skewed sample. The model learns from this incomplete data and repeats the same bias.
+
+\HWsubproblem
+\textbf{Imbalanced data:} Since the model minimizes average loss, every sample counts equally and the majority group dominates the training. A small group barely affects the average, so the model can fit the majority well and still ignore the errors it makes on the minority. This leaves it accurate for the majority but potentially unfair to the minority.
+
+% =====================================================================
+% Question 9: Fairness definitions
+% =====================================================================
+\HWproblem
+\HWsubproblem
+\textbf{Demographic parity} ($\hat{Y} \perp A$).
+$$P(\hat{Y} = 1 \mid A = 0) = P(\hat{Y} = 1 \mid A = 1).$$
+Both groups are selected at the same rate, no matter the true outcome.
+
+\HWsubproblem
+\textbf{Equal opportunity} ($\hat{Y} \perp A \mid Y = 1$).
+$$P(\hat{Y} = 1 \mid Y = 1, A = 0) = P(\hat{Y} = 1 \mid Y = 1, A = 1).$$
+Among people who are actually qualified ($Y = 1$), both groups are selected at the same rate.
+
+\HWsubproblem
+\textbf{Equalized odds} ($\hat{Y} \perp A \mid Y = y$ for $y \in \{0,1\}$).
+$$P(\hat{Y} = 1 \mid Y = y, A = 0) = P(\hat{Y} = 1 \mid Y = y, A = 1) \quad \text{for } y \in \{0, 1\}.$$
+Both groups have the same true positive rate and true negative rate, so once we know the true label the prediction does not depend on the group.
+
+\HWsubproblem
+\textbf{Predictive parity} ($Y \perp A \mid \hat{Y} = 1$).
+$$P(Y = 1 \mid \hat{Y} = 1, A = 0) = P(Y = 1 \mid \hat{Y} = 1, A = 1).$$
+When the model predicts positive, it is correct equally often for both groups.
+
+% =====================================================================
+% Question 10: Individual and intersectional fairness
+% =====================================================================
+\HWproblem
+\HWsubproblem
+Group fairness only constrains averages over whole groups, so it is a coarse requirement. Individual fairness is finer, since it asks that any two similar people be treated similarly. The two can pull against each other, because when the groups actually differ, matching a group average like the selection rate forces the model to apply different standards to each group. Two similar people in different groups then get different decisions, which is exactly what individual fairness rules out. So individual fairness tends to get lost when we optimize for group fairness.
+
+\HWsubproblem
+Selection rates for $A$:
+$$P(\hat{Y}=1 \mid A=0) = \tfrac{40+10}{100} = 50\%, \qquad P(\hat{Y}=1 \mid A=1) = \tfrac{10+40}{100} = 50\%.$$
+Yes, demographic parity holds for $A$ since both rates are $50\%$.
+
+\HWsubproblem
+Selection rates for $B$:
+$$P(\hat{Y}=1 \mid B=0) = \tfrac{40+10}{100} = 50\%, \qquad P(\hat{Y}=1 \mid B=1) = \tfrac{10+40}{100} = 50\%.$$
+Yes, demographic parity holds for $B$ since both rates are $50\%$.
+
+\HWsubproblem
+Intersectional selection rates $P(\hat{Y}=1 \mid A=a, B=b)$:
+\begin{align*}
+(A{=}0, B{=}0): \tfrac{40}{50} = 80\%, \qquad & (A{=}0, B{=}1): \tfrac{10}{50} = 20\%, \\
+(A{=}1, B{=}0): \tfrac{10}{50} = 20\%, \qquad & (A{=}1, B{=}1): \tfrac{40}{50} = 80\%.
+\end{align*}
+
+\HWsubproblem
+No. The four subgroup rates are $80\%, 20\%, 20\%, 80\%$, which are far from equal. So demographic parity fails at the intersectional level even though it holds for $A$ alone and for $B$ alone. The disparities are hidden by the marginals and only show up when $A$ and $B$ are looked at together.
+
+\HWsubproblem
+The practical cost is generalization. Enforcing fairness on a group means estimating its statistics from that group's samples. Broad groups have enough data for this to hold on new data, but as the groups shrink each one has too few samples, so the fairness is fit to noise and breaks out of sample. In the individual limit, each group is one person, so there is nothing to generalize from.
+
+% =====================================================================
+% Question 11: Fairness methods
+% =====================================================================
+\HWproblem
+\HWsubproblem
+\textbf{Direct optimization:} We can build fairness into the training objective itself by adding the fairness measure as a penalty with multiplier $\lambda$,
+$$L(\theta, \lambda) = \mathrm{Loss}(f_\theta, D) + \lambda \cdot \mathrm{FairnessGap},$$
+where FairnessGap is whatever fairness measure we choose, for example a demographic parity gap $|P(\hat{Y}=1 \mid A=0) - P(\hat{Y}=1 \mid A=1)|$. The multiplier $\lambda$ controls the balance between accuracy and fairness, and sweeping it traces out a Pareto frontier between the two.
+
+\HWsubproblem
+\textbf{Removing $A$ does not work:} The goal of dropping $A$ is to make $\hat{Y} \perp A$, but this usually fails. The other features $X$ are often correlated with $A$ and act as proxies for it, like zip code, name, or schooling. The model can rebuild $A$ from these features, so $\hat{Y}$ can still depend on $A$. Removing $A$ takes out the attribute itself but not the information the other features still carry about it, so independence does not necessarily follow.
+
+\HWsubproblem
+\textbf{Reweighting the data:} Reweighting weights each example by $w(x,y) = 1/p_X(x)$, which rebalances the marginal $p_X$ toward uniform. This addresses imbalanced data, so the model no longer favors the more common types of $x$ and the rarer ones get their fair share of influence on the loss. But it only touches $p_X$ and leaves the conditional $p_{Y \mid X}$ alone, so it does not fix bias baked into the labels themselves, like selective labels or historical bias.
+
+\HWsubproblem
+\textbf{Adversarial debiasing:} Two models are trained against each other. The predictor tries to predict $Y$ from $X$, while the adversary tries to guess the group $A$ from the predictor's output or internal representation. The predictor is trained both to predict $Y$ well and to fool the adversary, so its output keeps what is useful for $Y$ while revealing as little as possible about $A$, pushing toward $\hat{Y} \perp A$.
+
+% =====================================================================
+% Question 12: An impossibility result
+% =====================================================================
+\HWproblem
+Let $p_a = P(Y=1 \mid A=a)$ denote the group base rate and $\mathrm{TPR}_a = P(\hat{Y}=1 \mid Y=1, A=a)$.
+
+\HWsubproblem
+By Bayes' rule,
+$$P(Y=1 \mid \hat{Y}=1, A=1) = \frac{P(\hat{Y}=1 \mid Y=1, A=1)\,P(Y=1 \mid A=1)}{P(\hat{Y}=1 \mid A=1)} = \frac{\mathrm{TPR}_1 \, p_1}{P(\hat{Y}=1 \mid A=1)}.$$
+
+\HWsubproblem
+Likewise,
+$$P(Y=1 \mid \hat{Y}=1, A=0) = \frac{P(\hat{Y}=1 \mid Y=1, A=0)\,P(Y=1 \mid A=0)}{P(\hat{Y}=1 \mid A=0)} = \frac{\mathrm{TPR}_0 \, p_0}{P(\hat{Y}=1 \mid A=0)}.$$
+
+\HWsubproblem
+Predictive parity requires the two expressions to be equal:
+$$\frac{\mathrm{TPR}_1 \, p_1}{P(\hat{Y}=1 \mid A=1)} = \frac{\mathrm{TPR}_0 \, p_0}{P(\hat{Y}=1 \mid A=0)}.$$
+
+\HWsubproblem
+Demographic parity gives $P(\hat{Y}=1 \mid A=1) = P(\hat{Y}=1 \mid A=0)$, so the denominators are equal and cancel, leaving
+$$\mathrm{TPR}_1 \, p_1 = \mathrm{TPR}_0 \, p_0.$$
+
+\HWsubproblem
+From $\mathrm{TPR}_1 \, p_1 = \mathrm{TPR}_0 \, p_0$, the TPRs are equal ($\mathrm{TPR}_1 = \mathrm{TPR}_0$, i.e.\ equal opportunity) \emph{if and only if} the base rates are equal, $p_0 = p_1$, i.e.\ $P(Y=1 \mid A=0) = P(Y=1 \mid A=1)$. (Assuming nonzero TPRs.)
+
+\HWsubproblem
+The impossibility result means the three cannot hold at once, so any real system sits somewhere on the trade-off between them, like a point on a Pareto frontier. If I have to prioritize one, I would pick equal opportunity. It conditions on the true label $Y=1$, so it asks that people who are actually qualified get the same chance regardless of group, which is what matters most in hiring. In an ideal world where the labels are expressive and clean, this is exactly the right target. The caveat is that it leans entirely on $Y$ being trustworthy, since equalizing rates on a biased label would not be truly fair.
+
+% =====================================================================
+% Question 13: Required statements
+% =====================================================================
+\HWproblem
+\HWsubproblem
+\textbf{Collaboration statement:} I did not discuss this assignment with anyone. I mostly used the course slides, and I used the UPenn CS HW template (\url{https://www.overleaf.com/latex/templates/upenn-cs-hw-template/vbwrvfqctqdx}) to set up the LaTeX file. I also used Google and Wikipedia to look up a few definitions and terms that were not clear to me.
+
+\HWsubproblem
+\textbf{AI-usage statement:} I used AI for typesetting, fixing LaTeX errors, and proofreading.
+
+\end{document}
